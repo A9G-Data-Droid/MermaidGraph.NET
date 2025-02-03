@@ -2,7 +2,7 @@
   "profiles": {
     "mermaid-graph": {
       "commandName": "Project",
-      "commandLineArgs": "--path \"..\\..\\..\\mermaid-graph.csproj\""
+      "commandLineArgs": "--path \"..\\..\\..\\..\\MermaidGraph.NET.sln\""
     }
   }
 }
