@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "mermaid-graph": {
+      "commandName": "Project",
+      "commandLineArgs": "--path \"..\\..\\..\\mermaid-graph.csproj\""
+    }
+  }
+}
