@@ -1,20 +1,18 @@
-﻿using Microsoft.Build.Locator;
-
-namespace MermaidGraph;
+﻿namespace MermaidGraph;
 
 // ReSharper disable UnusedMember.Global
 
 /// <summary>
 /// mermaid-graph.exe
 /// </summary>
-internal sealed class Program
+public sealed class Program
 {
     /// <summary>
     /// Outputs a mermaid graph of the dependency diagram for a project, or whole solution.
     /// </summary>
     /// <param name="path">Full path to the solution (*.sln) or project (*.csproj) file that will be mapped.</param>
     /// <returns>HResult</returns>
-    internal static int Main(string? path)
+    public static int Main(string? path)
     {
         if (path is null)
         {
@@ -31,12 +29,6 @@ internal sealed class Program
 
         try
         {
-            // Ensure MSBuild is registered
-            if (!MSBuildLocator.IsRegistered)
-            {
-                MSBuildLocator.RegisterDefaults();
-            }
-
             if (path.EndsWith(".csproj"))
             {
                 Console.WriteLine(new Commands().Project(file));
