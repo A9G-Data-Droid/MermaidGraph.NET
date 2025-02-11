@@ -7,72 +7,92 @@ namespace MermaidGraph;
 /// <summary>
 /// The commands that can be run by `mermaid-graph`
 /// </summary>
-public static class Commands
+public class Commands
 {
-    private static readonly StringBuilder Graph = new();
+    private readonly StringBuilder _graph;
 
     private const string Fence = "```";
 
-    static Commands()
+    /// <summary>
+    /// Initialize the graph output
+    /// </summary>
+    public Commands()
     {
-        Graph.AppendLine(Fence + "mermaid");
-        Graph.AppendLine("graph TD");
+        _graph = new StringBuilder();
     }
 
     /// <summary>
     /// Generate the dependency graph of a Visual Studio Project.
     /// </summary>
-    /// <param name="path">Full path to `.csproj` file.</param>
-    public static void Project(string path)
+    /// <param name="file">`.csproj` file.</param>
+    public string Project(FileInfo file)
     {
-        GraphProject(path);
-        Graph.AppendLine(Fence);
-        Console.WriteLine(Graph.ToString());
-    }
-
-    private static void GraphProject(string path)
-    {
-        // Load project
-        var project = new Project(path);
-        var projectName = Path.GetFileNameWithoutExtension(path);
-
-        foreach (var item in project.GetItems("ProjectReference"))
-        {
-            string refPath = item.EvaluatedInclude;
-            string refName = Path.GetFileNameWithoutExtension(refPath);
-            Graph.AppendLine($"    {projectName} --> {refName}");
-        }
-
-        foreach (var item in project.GetItems("PackageReference"))
-        {
-            string packageName = item.EvaluatedInclude;
-            Graph.AppendLine($"    {projectName} -->|NuGet| {packageName}");
-        }
+        Header(file.Name);
+        GraphProject(file);
+        _graph.AppendLine(Fence);
+        var graph = _graph.ToString();
+        _graph.Clear();
+        return graph;
     }
 
     /// <summary>
     /// Generate the dependency graph of a Visual Studio Solution.
     /// </summary>
-    /// <param name="path">Full path to `.sln` file.</param>
-    public static void Solution(string path)
+    /// <param name="file">`.sln` file.</param>
+    public string Solution(FileInfo file)
     {
-        var solutionFile = SolutionFile.Parse(path);
-        var solutionName = Path.GetFileNameWithoutExtension(path);
+        Header(file.Name);
+        var solutionFile = SolutionFile.Parse(file.FullName);
+        var solutionName = Path.GetFileNameWithoutExtension(file.Name);
+        var solutionId = $"s{solutionFile.GetHashCode()}({solutionName})";
         foreach (var project in solutionFile.ProjectsInOrder)
         {
-            if (project.ProjectType == SolutionProjectType.KnownToBeMSBuildFormat)
+            if (project.ProjectType != SolutionProjectType.KnownToBeMSBuildFormat) continue;
+
+            var projectPath = project.AbsolutePath;
+            var projectName = Path.GetFileNameWithoutExtension(projectPath);
+            _graph.AppendLine($"    {solutionId} --> {projectName}");
+            var projectFile = new FileInfo(projectPath);
+            if (projectFile.Exists)
             {
-                var projectPath = project.AbsolutePath;
-                var projectName = Path.GetFileNameWithoutExtension(projectPath);
-                Graph.AppendLine($"    {solutionName} --> {projectName}");
-                if (File.Exists(projectPath))
-                {
-                    GraphProject(projectPath);
-                }
+                GraphProject(projectFile);
             }
         }
 
-        Graph.AppendLine(Fence);
-        Console.WriteLine(Graph.ToString());
+        _graph.AppendLine(Fence);
+        var graph = _graph.ToString();
+        _graph.Clear();
+        return graph;
+    }
+
+    private void Header(string title)
+    {
+        _graph.AppendLine(Fence + "mermaid");
+        _graph.AppendLine($"""
+                           ---
+                           title: {title}
+                           ---
+                           """);
+
+        _graph.AppendLine("graph TD");
+    }
+
+    private void GraphProject(FileInfo path)
+    {
+        var project = new Project(path.FullName);
+        var projectName = Path.GetFileNameWithoutExtension(path.Name);
+
+        foreach (var item in project.GetItems("ProjectReference"))
+        {
+            var refPath = item.EvaluatedInclude;
+            var refName = Path.GetFileNameWithoutExtension(refPath);
+            _graph.AppendLine($"    {projectName} --> {refName}");
+        }
+
+        foreach (var item in project.GetItems("PackageReference"))
+        {
+            var packageName = item.EvaluatedInclude;
+            _graph.AppendLine($"    {projectName} -->|NuGet| {packageName}");
+        }
     }
 }

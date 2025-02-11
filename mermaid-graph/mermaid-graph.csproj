@@ -11,6 +11,22 @@
     <AnalysisLevel>latest-recommended</AnalysisLevel>
     <PackAsTool>True</PackAsTool>
     <StartupObject>MermaidGraph.Program</StartupObject>
+    <SatelliteResourceLanguages>en</SatelliteResourceLanguages>
+    <PublishTrimmed>False</PublishTrimmed>
+    <Title>MermaidGraph.NET</Title>
+    <Authors>A9G-Data-Droid</Authors>
+    <Description>Create a mermaid graph of the dependency diagram for a project, or whole solution.</Description>
+    <Copyright>Copyright $([System.DateTime]::Now.Year) $(Company)</Copyright>
+    <PackageProjectUrl>https://github.com/A9G-Data-Droid/MermaidGraph.NET</PackageProjectUrl>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <RepositoryUrl>https://github.com/A9G-Data-Droid/MermaidGraph.NET.git</RepositoryUrl>
+    <PackageTags>mermaid.js</PackageTags>
+    <NeutralLanguage>en</NeutralLanguage>
+    <FileVersion>$(AssemblyVersion)</FileVersion>
+    <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+    <PackageIcon>mermaid-graph.png</PackageIcon>
+    <ApplicationIcon>mermaid-graph.ico</ApplicationIcon>
+    <Version>1.0.0-alpha</Version>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
@@ -22,6 +38,21 @@
     <WarningLevel>8</WarningLevel>
     <CheckForOverflowUnderflow>True</CheckForOverflowUnderflow>
   </PropertyGroup>
+
+  <ItemGroup>
+    <Content Include="mermaid-graph.ico" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="..\mermaid-graph.png">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
+    <None Include="..\README.md">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
+  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Microsoft.Build" Version="17.12.6" ExcludeAssets="runtime" />
