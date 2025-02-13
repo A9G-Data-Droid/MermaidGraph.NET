@@ -10,9 +10,10 @@ namespace MermaidGraph;
 /// </summary>
 public class Commands
 {
-    private readonly StringBuilder _graph;
+    public const string MermaidBegin = Fence + "mermaid";
+    public const string Fence = "```";
 
-    private const string Fence = "```";
+    private readonly StringBuilder _graph;
 
     /// <summary>
     /// Initialize the graph output
@@ -93,7 +94,7 @@ public class Commands
 
     private void Header(string title)
     {
-        _graph.AppendLine(Fence + "mermaid");
+        _graph.AppendLine(MermaidBegin);
         _graph.AppendLine($"""
                            ---
                            title: {title}
