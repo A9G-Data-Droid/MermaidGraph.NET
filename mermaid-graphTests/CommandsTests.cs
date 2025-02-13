@@ -1,4 +1,5 @@
-﻿using NUnit.Framework;
+﻿using Microsoft.ClearScript.V8;
+using NUnit.Framework;
 using Assert = NUnit.Framework.Assert;
 
 namespace MermaidGraph.Tests;
@@ -16,10 +17,12 @@ public class CommandsTests
         var graph = new Commands().Solution(info);
 
         Console.WriteLine(graph);
+        var graphType = DetectType(ExtractMermaid(graph));
+        Console.WriteLine(graphType);
     }
 
     [Test()]
-    public void DogFoodProjectTest()
+    public async Task DogFoodProjectTestAsync()
     {
         var filePath = FindFileDownTree("*.csproj");
         Assert.That(filePath, Is.Not.Null);
@@ -28,6 +31,9 @@ public class CommandsTests
         var graph = new Commands().Project(info);
 
         Console.WriteLine(graph);
+
+        var graphType = await MermaidRender(ExtractMermaid(graph));
+        Console.WriteLine(graphType);
     }
 
     [Test()]
@@ -61,7 +67,36 @@ public class CommandsTests
         Assert.That(Program.Main(file), Is.EqualTo(hResult));
     }
 
-    public static string? FindFileDownTree(string searchPattern)
+    private static string ExtractMermaid(string markup)
+    {
+        Assert.That(markup, Does.StartWith(Commands.MermaidBegin));
+        markup = markup.Substring(Commands.MermaidBegin.Length + Environment.NewLine.Length);
+
+        Assert.That(markup, Does.EndWith(Commands.Fence + Environment.NewLine));
+        return markup.Substring(0, markup.Length - Commands.MermaidBegin.Length + Environment.NewLine.Length);
+    }
+
+    private static string DetectType(string markup)
+    {
+        using var engine = new V8ScriptEngine();
+        var mermaidJs = File.ReadAllText("js\\mermaid.min.js");
+        engine.Execute(mermaidJs);
+
+        return engine.Script.mermaid.detectType(markup);
+    }
+
+    private static async Task<string> MermaidRender(string markup)
+    {
+        using var engine = new V8ScriptEngine();
+        var mermaidJs = File.ReadAllText("js\\mermaid.min.js");
+        engine.Execute(mermaidJs);
+
+        var svg = await engine.Script.mermaid.render(markup);
+        Assert.That(svg, Is.Not.Null);
+        return svg.ToString();
+    }
+
+    private static string? FindFileDownTree(string searchPattern)
     {
         var currentDir = Directory.GetCurrentDirectory();
 
