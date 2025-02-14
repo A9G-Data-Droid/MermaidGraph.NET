@@ -1,6 +1,7 @@
 ![MermaidGraph.NET](mermaid-graph.png "MermaidGraph.NET")
 
-# MermaidGraph.NET ![badge](https://img.shields.io/endpoint?url=https://gist.githubusercontent.com/A9G-Data-Droid/24afd0c237dc4c9b56453dce09b24687/raw/9e872dfb751a1afc39c3a000d9511bc56626c439/MermaidGraph.NET.code-coverage.json)
+# MermaidGraph.NET ![badge](https://img.shields.io/endpoint?url=https://gist.githubusercontent.com/A9G-Data-Droid/24afd0c237dc4c9b56453dce09b24687/raw/MermaidGraph.NET.code-coverage.json)
+
 Create a mermaid graph of the dependency diagram for a project, or whole solution.
 
 ## Dotnet tool [![NuGet version (mermaid-graph)](https://img.shields.io/nuget/v/mermaid-graph.svg?style=flat-square)](https://www.nuget.org/packages/mermaid-graph/)
