@@ -26,8 +26,12 @@
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
     <PackageIcon>mermaid-graph.png</PackageIcon>
     <ApplicationIcon>mermaid-graph.ico</ApplicationIcon>
-    <Version>1.0.0-alpha</Version>
+    <Version>1.0.0-beta</Version>
     <PackageLicenseFile>LICENSE</PackageLicenseFile>
+    <EnablePackageValidation>true</EnablePackageValidation>
+
+    <!-- TODO: Enable after first release. Detect breaking changes from a previous stable version. -->
+    <!-- <PackageValidationBaselineVersion>1.0.0</PackageValidationBaselineVersion> -->
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
