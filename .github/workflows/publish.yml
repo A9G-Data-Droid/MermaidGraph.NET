@@ -55,7 +55,7 @@ jobs:
         path: mermaid-graphTests/TestResults/coverage.opencover.xml
         gist-filename: MermaidGraph.NET.code-coverage.json
         gist-id: 24afd0c237dc4c9b56453dce09b24687
-        gist-auth-token: ${{ secrets.GIST_AUTH_TOKEN }}       
+        gist-auth-token: ${{ secrets.GIST_AUTH_TOKEN }}
 
     - name: Print code coverage
       run: echo "Code coverage percentage ${{steps.create_coverage_badge.outputs.percentage}}%"
@@ -64,7 +64,7 @@ jobs:
     - run: dotnet pack --configuration Release --no-build --output ${{env.NuGetDirectory}}
 
     # Publish the NuGet package as an artifact, so they can be used in following jobs
-    - uses: actions/upload-artifact@v3
+    - uses: actions/upload-artifact@v4
       with:
         name: nuget
         if-no-files-found: error
