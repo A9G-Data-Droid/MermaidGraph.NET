@@ -1,4 +1,5 @@
-﻿using Microsoft.ClearScript.V8;
+﻿using MermaidGraph.Diagrams;
+using Microsoft.ClearScript.V8;
 using NUnit.Framework;
 using Assert = NUnit.Framework.Assert;
 
@@ -88,13 +89,13 @@ public class CommandsTests
         Assert.That(Program.Main(file), Is.EqualTo(hResult));
     }
 
-    private static string ExtractMermaid(string markup)
+    private static string ExtractMermaid(string? markup)
     {
-        Assert.That(markup, Does.StartWith(Commands.MermaidBegin));
-        markup = markup.Substring(Commands.MermaidBegin.Length + Environment.NewLine.Length);
+        Assert.That(markup, Does.StartWith(Diagram.MermaidBegin));
+        markup = markup.Substring(Diagram.MermaidBegin.Length + Environment.NewLine.Length);
 
-        Assert.That(markup, Does.EndWith(Commands.Fence + Environment.NewLine));
-        return markup.Substring(0, markup.Length - Commands.MermaidBegin.Length + Environment.NewLine.Length);
+        Assert.That(markup, Does.EndWith(Diagram.Fence + Environment.NewLine));
+        return markup.Substring(0, markup.Length - Diagram.MermaidBegin.Length + Environment.NewLine.Length);
     }
 
     private string? DetectType(string markup)
