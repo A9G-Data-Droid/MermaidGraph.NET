@@ -4,10 +4,31 @@ using Assert = NUnit.Framework.Assert;
 
 namespace MermaidGraph.Tests;
 
-[TestFixture()]
+[TestFixture]
 public class CommandsTests
 {
-    [Test()]
+    private V8ScriptEngine? _engine;
+    private V8ScriptEngine Js {
+        get
+        {
+            if (_engine is null)
+            {
+                _engine ??= new V8ScriptEngine();
+                _engine.Execute(File.ReadAllText("js\\mermaid.min.js"));
+                _engine.Script.mermaid.initialize();
+            }
+
+            return _engine;
+        }
+    }
+
+    [OneTimeTearDown]
+    public void Disposal()
+    {
+        _engine?.Dispose();
+    }
+
+    [Test]
     public void DogFoodSolutionTest()
     {
         var solutionPath = FindFileDownTree("*.sln");
@@ -17,12 +38,14 @@ public class CommandsTests
         var graph = new Commands().Solution(info);
 
         Console.WriteLine(graph);
+
         var graphType = DetectType(ExtractMermaid(graph));
+        Assert.That(graphType, Is.EqualTo("class"));
         Console.WriteLine(graphType);
     }
 
-    [Test()]
-    public async Task DogFoodProjectTestAsync()
+    [Test]
+    public void DogFoodProjectTestAsync()
     {
         var filePath = FindFileDownTree("*.csproj");
         Assert.That(filePath, Is.Not.Null);
@@ -32,29 +55,28 @@ public class CommandsTests
 
         Console.WriteLine(graph);
 
-        var graphType = await MermaidRender(ExtractMermaid(graph));
+        var graphType = DetectType(ExtractMermaid(graph));
+        Assert.That(graphType, Is.EqualTo("class"));
         Console.WriteLine(graphType);
     }
 
-    [Test()]
+    [Test]
     public void CommandLineProjectTest()
     {
         var filePath = FindFileDownTree("*.csproj");
         Assert.That(filePath, Is.Not.Null);
-
         Assert.That(Program.Main(filePath), Is.EqualTo(0));
     }
 
-    [Test()]
+    [Test]
     public void CommandLineSolutionTest()
     {
         var filePath = FindFileDownTree("*.sln");
         Assert.That(filePath, Is.Not.Null);
-
         Assert.That(Program.Main(filePath), Is.EqualTo(0));
     }
 
-    [Test()]
+    [Test]
     [TestCase(null, 1)]
     [TestCase("File Not Found", 2)]
     [TestCase("mermaid-graph.dll", 3)]
@@ -63,7 +85,6 @@ public class CommandsTests
     {
         var filePath = FindFileDownTree("*.csproj");
         Assert.That(filePath, Is.Not.Null);
-
         Assert.That(Program.Main(file), Is.EqualTo(hResult));
     }
 
@@ -76,24 +97,9 @@ public class CommandsTests
         return markup.Substring(0, markup.Length - Commands.MermaidBegin.Length + Environment.NewLine.Length);
     }
 
-    private static string DetectType(string markup)
+    private string? DetectType(string markup)
     {
-        using var engine = new V8ScriptEngine();
-        var mermaidJs = File.ReadAllText("js\\mermaid.min.js");
-        engine.Execute(mermaidJs);
-
-        return engine.Script.mermaid.detectType(markup);
-    }
-
-    private static async Task<string> MermaidRender(string markup)
-    {
-        using var engine = new V8ScriptEngine();
-        var mermaidJs = File.ReadAllText("js\\mermaid.min.js");
-        engine.Execute(mermaidJs);
-
-        var svg = await engine.Script.mermaid.render(markup);
-        Assert.That(svg, Is.Not.Null);
-        return svg.ToString();
+        return Js.Script.mermaid.detectType(markup);
     }
 
     private static string? FindFileDownTree(string searchPattern)
