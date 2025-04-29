@@ -1,4 +1,5 @@
-﻿using Microsoft.ClearScript.V8;
+﻿using MermaidGraph.Diagrams;
+using Microsoft.ClearScript.V8;
 using NUnit.Framework;
 using Assert = NUnit.Framework.Assert;
 
@@ -22,6 +23,12 @@ public class CommandsTests
         }
     }
 
+    internal static readonly object[] DiagramTypeTestCases =
+    [
+        new object[] { DiagramType.Class, "class" },
+        new object[] { DiagramType.Graph, "flowchart" }
+    ];
+
     [OneTimeTearDown]
     public void Disposal()
     {
@@ -29,34 +36,36 @@ public class CommandsTests
     }
 
     [Test]
-    public void DogFoodSolutionTest()
+    [TestCaseSource(nameof(DiagramTypeTestCases))]
+    public void DogFoodSolutionTest(DiagramType type, string typeName)
     {
         var solutionPath = FindFileDownTree("*.sln");
         Assert.That(solutionPath, Is.Not.Null);
         var info = new FileInfo(solutionPath!);
         Assert.That(info.Exists);
-        var graph = new Commands().Solution(info);
+        var graph = Commands.Solution(info, type);
 
         Console.WriteLine(graph);
 
         var graphType = DetectType(ExtractMermaid(graph));
-        Assert.That(graphType, Is.EqualTo("class"));
+        Assert.That(graphType, Is.EqualTo(typeName));
         Console.WriteLine(graphType);
     }
 
     [Test]
-    public void DogFoodProjectTestAsync()
+    [TestCaseSource(nameof(DiagramTypeTestCases))]
+    public void DogFoodProjectTest(DiagramType type, string typeName)
     {
         var filePath = FindFileDownTree("*.csproj");
         Assert.That(filePath, Is.Not.Null);
         var info = new FileInfo(filePath!);
         Assert.That(info.Exists);
-        var graph = new Commands().Project(info);
+        var graph = Commands.Project(info, type);
 
         Console.WriteLine(graph);
 
         var graphType = DetectType(ExtractMermaid(graph));
-        Assert.That(graphType, Is.EqualTo("class"));
+        Assert.That(graphType, Is.EqualTo(typeName));
         Console.WriteLine(graphType);
     }
 
@@ -88,13 +97,13 @@ public class CommandsTests
         Assert.That(Program.Main(file), Is.EqualTo(hResult));
     }
 
-    private static string ExtractMermaid(string markup)
+    private static string ExtractMermaid(string? markup)
     {
-        Assert.That(markup, Does.StartWith(Commands.MermaidBegin));
-        markup = markup.Substring(Commands.MermaidBegin.Length + Environment.NewLine.Length);
+        Assert.That(markup, Does.StartWith(MermaidDiagram.MermaidBegin));
+        markup = markup.Substring(MermaidDiagram.MermaidBegin.Length + Environment.NewLine.Length);
 
-        Assert.That(markup, Does.EndWith(Commands.Fence + Environment.NewLine));
-        return markup.Substring(0, markup.Length - Commands.MermaidBegin.Length + Environment.NewLine.Length);
+        Assert.That(markup, Does.EndWith(MermaidDiagram.Fence + Environment.NewLine));
+        return markup.Substring(0, markup.Length - MermaidDiagram.MermaidBegin.Length + Environment.NewLine.Length);
     }
 
     private string? DetectType(string markup)
