@@ -3,13 +3,13 @@ using Microsoft.Build.Evaluation;
 
 namespace MermaidGraph.Diagrams;
 
-internal class ClassDiagram : Diagram
+internal class GraphDiagram : Diagram
 {
     /// <inheritdoc />
     public override void Header(string title)
     {
         base.Header(title);
-        Graph.AppendLine("classDiagram");
+        Graph.AppendLine("graph TD");
     }
 
     /// <summary>

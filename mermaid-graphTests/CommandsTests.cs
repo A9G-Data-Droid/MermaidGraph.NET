@@ -23,6 +23,13 @@ public class CommandsTests
         }
     }
 
+    internal static readonly object[] DiagramTypeTestCases =
+    [
+        new object[] { DiagramType.Class, "class" },
+        new object[] { DiagramType.Class, "class" },
+        new object[] { DiagramType.Graph, "flowchart" }
+    ];
+
     [OneTimeTearDown]
     public void Disposal()
     {
@@ -30,34 +37,36 @@ public class CommandsTests
     }
 
     [Test]
-    public void DogFoodSolutionTest()
+    [TestCaseSource(nameof(DiagramTypeTestCases))]
+    public void DogFoodSolutionTest(DiagramType type, string typeName)
     {
         var solutionPath = FindFileDownTree("*.sln");
         Assert.That(solutionPath, Is.Not.Null);
         var info = new FileInfo(solutionPath!);
         Assert.That(info.Exists);
-        var graph = new Commands().Solution(info);
+        var graph = Commands.Solution(info, type);
 
         Console.WriteLine(graph);
 
         var graphType = DetectType(ExtractMermaid(graph));
-        Assert.That(graphType, Is.EqualTo("class"));
+        Assert.That(graphType, Is.EqualTo(typeName));
         Console.WriteLine(graphType);
     }
 
     [Test]
-    public void DogFoodProjectTestAsync()
+    [TestCaseSource(nameof(DiagramTypeTestCases))]
+    public void DogFoodProjectTestAsync(DiagramType type, string typeName)
     {
         var filePath = FindFileDownTree("*.csproj");
         Assert.That(filePath, Is.Not.Null);
         var info = new FileInfo(filePath!);
         Assert.That(info.Exists);
-        var graph = new Commands().Project(info);
+        var graph = Commands.Project(info, type);
 
         Console.WriteLine(graph);
 
         var graphType = DetectType(ExtractMermaid(graph));
-        Assert.That(graphType, Is.EqualTo("class"));
+        Assert.That(graphType, Is.EqualTo(typeName));
         Console.WriteLine(graphType);
     }
 
