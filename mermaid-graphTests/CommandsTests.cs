@@ -26,7 +26,6 @@ public class CommandsTests
     internal static readonly object[] DiagramTypeTestCases =
     [
         new object[] { DiagramType.Class, "class" },
-        new object[] { DiagramType.Class, "class" },
         new object[] { DiagramType.Graph, "flowchart" }
     ];
 
