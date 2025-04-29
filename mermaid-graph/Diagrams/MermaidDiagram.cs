@@ -4,27 +4,27 @@ using Microsoft.Build.Locator;
 namespace MermaidGraph.Diagrams;
 
 /// <summary>
-/// The Diagram abstract class implements shared functionality for Mermaid diagram generation,
+/// The MermaidDiagram abstract class implements shared functionality for Mermaid diagram generation,
 /// including initializing the graph output and managing the graph buffer.
 /// </summary>
-public abstract class Diagram : IMermaidDiagram
+public abstract class MermaidDiagram : IMermaidDiagram
 {
     /// <summary>
-    /// Code block fence
+    /// Code block fence.
     /// </summary>
     public const string Fence = "```";
 
     /// <summary>
-    /// Mermaid code block
+    /// Mermaid code block.
     /// </summary>
     public const string MermaidBegin = Fence + "mermaid";
     
     internal readonly StringBuilder Graph = new();
 
     /// <summary>
-    /// Initialize the Diagram class and ensure MSBuild is registered.
+    /// Initialize the MermaidDiagram class and ensure MSBuild is registered.
     /// </summary>
-    protected Diagram()
+    protected MermaidDiagram()
     {
         if (!MSBuildLocator.IsRegistered)
         {
@@ -33,10 +33,11 @@ public abstract class Diagram : IMermaidDiagram
     }
 
     /// <summary>
-    /// Initialize the graph output
+    /// Initialize the graph output.
     /// </summary>
     public virtual void Header(string title)
     {
+        Graph.Clear();
         Graph.AppendLine(MermaidBegin);
         Graph.AppendLine($"""
                            ---

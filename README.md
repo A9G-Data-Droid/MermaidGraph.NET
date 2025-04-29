@@ -19,12 +19,21 @@ Usage:
   mermaid-graph [options]
 
 Options:
-  --path <path>   Full path to the solution (*.sln) or project (*.csproj) file that will be mapped.
-  --version       Show version information
-  -?, -h, --help  Show help and usage information
-  ```
+  --path <path>         Full path to the solution (*.sln) or project (*.csproj) file that will be mapped.
+  --type <Class|Graph>  The type of diagram to generate (e.g., Graph or Class). [default: Graph]
+  --version             Show version information
+  -?, -h, --help        Show help and usage information
+```
 
 ## Example output from this solution
+
+You can run the following command to generate a class diagram for this solution:
+
+```powershell
+.\mermaid-graph.exe --path "MermaidGraph.NET.sln" --type Class
+```
+
+This will generate a mermaid graph in the console output, which can be piped to a file and used in a markdown document.
 
 ```mermaid
 ---
@@ -78,6 +87,16 @@ classDiagram
         version 6.0.4
     }
     MermaidGraphTests ..> coverlet.msbuild
+    class Microsoft.ClearScript.V8{
+        type NuGet
+        version 7.4.5
+    }
+    MermaidGraphTests ..> Microsoft.ClearScript.V8
+    class Microsoft.ClearScript.V8.Native.win-x64{
+        type NuGet
+        version 7.4.5
+    }
+    MermaidGraphTests ..> Microsoft.ClearScript.V8.Native.win-x64
     class Microsoft.NET.Test.Sdk{
         type NuGet
         version 17.13.0

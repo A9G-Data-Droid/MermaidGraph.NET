@@ -1,4 +1,6 @@
-﻿namespace MermaidGraph;
+﻿using MermaidGraph.Diagrams;
+
+namespace MermaidGraph;
 
 /// <summary>
 /// mermaid-graph.exe
@@ -9,9 +11,9 @@ public sealed class Program
     /// Outputs a mermaid graph of the dependency diagram for a project, or whole solution.
     /// </summary>
     /// <param name="path">Full path to the solution (*.sln) or project (*.csproj) file that will be mapped.</param>
-    /// <param name="diagramType">The type of diagram to generate (e.g., Graph or Class).</param>
+    /// <param name="type">The type of diagram to generate (e.g., Graph or Class).</param>
     /// <returns>HResult</returns>
-    public static int Main(string? path, DiagramType diagramType = DiagramType.Graph)
+    public static int Main(string? path, DiagramType type = DiagramType.Graph)
     {
         if (path is null)
         {
@@ -32,13 +34,13 @@ public sealed class Program
         {
             if (path.EndsWith(".csproj"))
             {
-                Console.WriteLine(Commands.Project(file, diagramType));
+                Console.WriteLine(Commands.Project(file, type));
                 return 0;
             }
 
             if (path.EndsWith(".sln"))
             {
-                Console.WriteLine(Commands.Solution(file, diagramType));
+                Console.WriteLine(Commands.Solution(file, type));
                 return 0;
             }
         }

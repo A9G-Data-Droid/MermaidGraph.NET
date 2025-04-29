@@ -1,7 +1,7 @@
 ﻿namespace MermaidGraph.Diagrams;
 
 /// <summary>
-/// This file defines the IMermaidDiagram interface and the Diagram abstract class.
+/// This file defines the IMermaidDiagram interface and the MermaidDiagram abstract class.
 /// The IMermaidDiagram interface provides methods for generating Mermaid diagrams
 /// from Visual Studio project (*.csproj) and solution (*.sln) files.
 /// </summary>

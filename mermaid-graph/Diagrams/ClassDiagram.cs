@@ -3,7 +3,7 @@ using Microsoft.Build.Evaluation;
 
 namespace MermaidGraph.Diagrams;
 
-internal class ClassDiagram : Diagram
+internal class ClassDiagram : MermaidDiagram
 {
     /// <inheritdoc />
     public override void Header(string title)
@@ -23,13 +23,10 @@ internal class ClassDiagram : Diagram
         var project = projectCollection.LoadProject(file.FullName);
         GraphProject(project);
         Graph.AppendLine(Fence);
-        var graph = Graph.ToString();
 
-        // Cleanup
-        Graph.Clear();
         projectCollection.UnloadAllProjects();
 
-        return graph;
+        return Graph.ToString();
     }
 
     /// <summary>
@@ -66,13 +63,10 @@ internal class ClassDiagram : Diagram
         }
 
         Graph.AppendLine(Fence);
-        var graph = Graph.ToString();
-        
-        // Cleanup
-        Graph.Clear();
+
         projectCollection.UnloadAllProjects();
 
-        return graph;
+        return Graph.ToString();
     }
 
     private void GraphProject(Project project)

@@ -55,7 +55,7 @@ public class CommandsTests
 
     [Test]
     [TestCaseSource(nameof(DiagramTypeTestCases))]
-    public void DogFoodProjectTestAsync(DiagramType type, string typeName)
+    public void DogFoodProjectTest(DiagramType type, string typeName)
     {
         var filePath = FindFileDownTree("*.csproj");
         Assert.That(filePath, Is.Not.Null);
@@ -100,11 +100,11 @@ public class CommandsTests
 
     private static string ExtractMermaid(string? markup)
     {
-        Assert.That(markup, Does.StartWith(Diagram.MermaidBegin));
-        markup = markup.Substring(Diagram.MermaidBegin.Length + Environment.NewLine.Length);
+        Assert.That(markup, Does.StartWith(MermaidDiagram.MermaidBegin));
+        markup = markup.Substring(MermaidDiagram.MermaidBegin.Length + Environment.NewLine.Length);
 
-        Assert.That(markup, Does.EndWith(Diagram.Fence + Environment.NewLine));
-        return markup.Substring(0, markup.Length - Diagram.MermaidBegin.Length + Environment.NewLine.Length);
+        Assert.That(markup, Does.EndWith(MermaidDiagram.Fence + Environment.NewLine));
+        return markup.Substring(0, markup.Length - MermaidDiagram.MermaidBegin.Length + Environment.NewLine.Length);
     }
 
     private string? DetectType(string markup)

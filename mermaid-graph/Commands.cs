@@ -1,26 +1,9 @@
-﻿using System.Diagnostics;
-using MermaidGraph.Diagrams;
+﻿using MermaidGraph.Diagrams;
 
 namespace MermaidGraph;
 
 /// <summary>
-/// Specifies the type of mermaid diagram to generate.
-/// </summary>
-public enum DiagramType
-{
-    /// <summary>
-    /// Represents a general dependency graph.
-    /// </summary>
-    Graph,
-
-    /// <summary>
-    /// Represents a class diagram.
-    /// </summary>
-    Class
-}
-
-/// <summary>
-/// The commands that can be run by `mermaid-graph`
+/// The commands that can be run by `mermaid-graph`.
 /// </summary>
 public class Commands
 {
@@ -48,7 +31,7 @@ public class Commands
         return graph.Solution(file);
     }
 
-    private static Diagram GetGraphType(DiagramType diagramType) => diagramType switch
+    private static IMermaidDiagram GetGraphType(DiagramType diagramType) => diagramType switch
     {
         DiagramType.Class => new ClassDiagram(),
         DiagramType.Graph => new GraphDiagram(),
