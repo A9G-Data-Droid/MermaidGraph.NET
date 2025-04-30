@@ -11,13 +11,15 @@ public interface IMermaidDiagram
     /// Generate the diagram from a visual studio project file (*.csproj)
     /// </summary>
     /// <param name="file">The project file</param>
+    /// <param name="filter">Exclude projects whose name matches the filter. (e.g., Test)</param>
     /// <returns>Mermaid Markdown</returns>
-    public string Project(FileInfo file);
+    public string Project(FileInfo file, string? filter = null);
 
     /// <summary>
     /// Generate the diagram from a visual studio solution file (*.sln)
     /// </summary>
     /// <param name="file">The solution file.</param>
+    /// <param name="filter">Exclude projects whose name matches the filter. (e.g., Test)</param>
     /// <returns>Mermaid Markdown</returns>
-    public string Solution(FileInfo file);
+    public string Solution(FileInfo file, string? filter = null);
 }

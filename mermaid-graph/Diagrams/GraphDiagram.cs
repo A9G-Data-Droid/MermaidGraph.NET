@@ -16,11 +16,8 @@ public sealed class GraphDiagram : MermaidDiagram
         Graph.AppendLine("graph TD");
     }
 
-    /// <summary>
-    /// Generate the dependency graph of a Visual Studio Solution.
-    /// </summary>
-    /// <param name="file">`.sln` file.</param>
-    public override string Solution(FileInfo file)
+    /// <inheritdoc />
+    public override string Solution(FileInfo file, string? filter = null)
     {
         Header(file.Name);
         var solutionFile = SolutionFile.Parse(file.FullName);
@@ -35,12 +32,16 @@ public sealed class GraphDiagram : MermaidDiagram
 
             var projectPath = project.AbsolutePath;
             var projectName = Path.GetFileNameWithoutExtension(projectPath);
+            if (!string.IsNullOrEmpty(filter) &&
+                projectName.Contains(filter, StringComparison.Ordinal)) 
+                continue;
+
             Graph.AppendLine($"    {solutionId} --> {projectName}");
             var projectFile = new FileInfo(projectPath);
             if (projectFile.Exists)
             {
                 var referenceProject = projectCollection.LoadProject(projectFile.FullName);
-                GraphProject(referenceProject);
+                GraphProject(referenceProject, filter);
             }
         }
 
@@ -51,7 +52,7 @@ public sealed class GraphDiagram : MermaidDiagram
         return Graph.ToString();
     }
 
-    internal override void GraphProject(Project project)
+    internal override void GraphProject(Project project, string? filter = null)
     {
         var projectName = Path.GetFileNameWithoutExtension(project.FullPath);
 
@@ -59,6 +60,10 @@ public sealed class GraphDiagram : MermaidDiagram
         {
             var refPath = item.EvaluatedInclude;
             var refName = Path.GetFileNameWithoutExtension(refPath);
+            if (!string.IsNullOrEmpty(filter) &&
+                projectName.Contains(filter, StringComparison.Ordinal)) 
+                continue;
+
             Graph.AppendLine($"    {projectName} --> {refName}");
         }
 

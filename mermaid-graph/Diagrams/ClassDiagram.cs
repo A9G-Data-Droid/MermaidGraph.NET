@@ -16,11 +16,8 @@ public sealed class ClassDiagram : MermaidDiagram
         Graph.AppendLine("classDiagram");
     }
 
-    /// <summary>
-    /// Generate the dependency graph of a Visual Studio Solution.
-    /// </summary>
-    /// <param name="file">`.sln` file.</param>
-    public override string Solution(FileInfo file)
+    /// <inheritdoc />
+    public override string Solution(FileInfo file, string? filter = null)
     {
         Header(file.Name);
         var solutionFile = SolutionFile.Parse(file.FullName);
@@ -37,15 +34,19 @@ public sealed class ClassDiagram : MermaidDiagram
         foreach (var project in solutionFile.ProjectsInOrder)
         {
             if (project.ProjectType != SolutionProjectType.KnownToBeMSBuildFormat) continue;
-
+            
             var projectPath = project.AbsolutePath;
             var projectName = Path.GetFileNameWithoutExtension(projectPath);
+            if (!string.IsNullOrEmpty(filter) &&
+                projectName.Contains(filter, StringComparison.Ordinal)) 
+                continue;
+
             Graph.AppendLine($"    {solutionId} --> {projectName}");
             var projectFile = new FileInfo(projectPath);
             if (projectFile.Exists)
             {
                 var referenceProject = projectCollection.LoadProject(projectFile.FullName);
-                GraphProject(referenceProject);
+                GraphProject(referenceProject, filter);
             }
         }
 
@@ -56,11 +57,13 @@ public sealed class ClassDiagram : MermaidDiagram
         return Graph.ToString();
     }
 
-    internal override void GraphProject(Project project)
+    internal override void GraphProject(Project project, string? filter = null)
     {
         var projectName = Path.GetFileNameWithoutExtension(project.FullPath);
         var type = project.GetPropertyValue("OutputType");
-        var targetFramework = project.GetPropertyValue("TargetFramework") ?? project.GetPropertyValue("TargetFrameworks");
+        var targetFramework = project.GetPropertyValue("TargetFramework") ?? 
+                              project.GetPropertyValue("TargetFrameworks");
+
         Graph.AppendLine($$"""
                               class {{projectName}}{
                                   type {{type}}
@@ -72,6 +75,10 @@ public sealed class ClassDiagram : MermaidDiagram
         {
             var refPath = item.EvaluatedInclude;
             var refName = Path.GetFileNameWithoutExtension(refPath);
+            if (!string.IsNullOrEmpty(filter) &&
+                projectName.Contains(filter, StringComparison.Ordinal)) 
+                continue;
+
             Graph.AppendLine($"    {projectName} ..> {refName}");
         }
 

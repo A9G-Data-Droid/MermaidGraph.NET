@@ -27,5 +27,22 @@ public class MermaidDiagramTests
         Assert.Throws<NotImplementedException>(()=>
             MermaidDiagram.GetDiagramType((DiagramType)999));
     }
+
+    [Test]
+    [TestCase(DiagramType.Class)]
+    [TestCase(DiagramType.Graph)]
+    public void Header_ShouldInitializeGraphWithTitle(DiagramType type)
+    {
+        var diagram = (MermaidDiagram)MermaidDiagram.GetDiagramType(type);
+        
+        // Arrange
+        const string title = "Test Diagram";
+
+        // Act
+        diagram.Header(title);
+
+        // Assert
+        Assert.That(diagram.ToString(), Does.Contain($"title: {title}"));
+    }
 }
 

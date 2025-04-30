@@ -20,7 +20,7 @@ public abstract class MermaidDiagram : IMermaidDiagram
     /// </summary>
     public const string MermaidBegin = Fence + "mermaid";
     
-    internal readonly StringBuilder Graph = new(256);
+    internal StringBuilder Graph { get; } = new(256);
 
     /// <summary>
     /// Initialize the MermaidDiagram class and ensure MSBuild is registered.
@@ -70,12 +70,12 @@ public abstract class MermaidDiagram : IMermaidDiagram
     public override string ToString() => Graph.ToString();
 
     /// <inheritdoc />
-    public virtual string Project(FileInfo file)
+    public virtual string Project(FileInfo file, string? filter = null)
     {
         Header(file.Name);
         using var projectCollection = new ProjectCollection();
         var project = projectCollection.LoadProject(file.FullName);
-        GraphProject(project);
+        GraphProject(project, filter);
         Graph.AppendLine(Fence);
 
         projectCollection.UnloadAllProjects();
@@ -84,11 +84,12 @@ public abstract class MermaidDiagram : IMermaidDiagram
     }
 
     /// <inheritdoc />
-    public abstract string Solution(FileInfo file);
+    public abstract string Solution(FileInfo file, string? filter = null);
 
     /// <summary>
     /// This method must be implemented in all derived classes to generate the graph for a project.
     /// </summary>
     /// <param name="project">A project to graph.</param>
-    internal abstract void GraphProject(Project project);
+    /// <param name="filter">Exclude projects whose name matches the filter. (e.g., Test)</param>
+    internal abstract void GraphProject(Project project, string? filter = null);
 }
