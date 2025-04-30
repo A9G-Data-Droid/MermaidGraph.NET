@@ -70,12 +70,12 @@ public abstract class MermaidDiagram : IMermaidDiagram
     public override string ToString() => Graph.ToString();
 
     /// <inheritdoc />
-    public virtual string Project(FileInfo file, string? filter = null)
+    public virtual string Project(FileInfo file, string? filter = null, bool excludeNuget = false)
     {
         Header(file.Name);
         using var projectCollection = new ProjectCollection();
         var project = projectCollection.LoadProject(file.FullName);
-        GraphProject(project, filter);
+        GraphProject(project, filter, excludeNuget);
         Graph.AppendLine(Fence);
 
         projectCollection.UnloadAllProjects();
@@ -84,12 +84,13 @@ public abstract class MermaidDiagram : IMermaidDiagram
     }
 
     /// <inheritdoc />
-    public abstract string Solution(FileInfo file, string? filter = null);
+    public abstract string Solution(FileInfo file, string? filter = null, bool excludeNuget = false);
 
     /// <summary>
     /// This method must be implemented in all derived classes to generate the graph for a project.
     /// </summary>
     /// <param name="project">A project to graph.</param>
     /// <param name="filter">Exclude projects whose name matches the filter. (e.g., Test)</param>
-    internal abstract void GraphProject(Project project, string? filter = null);
+    /// <param name="excludeNuget">Do not include NuGet packages in the graph</param>
+    internal abstract void GraphProject(Project project, string? filter = null, bool excludeNuget = false);
 }

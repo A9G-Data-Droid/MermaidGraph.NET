@@ -10,20 +10,20 @@ public class Commands
     /// <summary>
     /// Generate the dependency graph of a Visual Studio Project.
     /// </summary>
-    public static string Project(FileInfo file, DiagramType diagramType = DiagramType.Graph, string? filter = null)
+    public static string Project(FileInfo file, DiagramType diagramType = DiagramType.Graph, string? filter = null, bool excludeNuget = false)
     {
         var graph = MermaidDiagram.GetDiagramType(diagramType);
         
-        return graph.Project(file, filter);
+        return graph.Project(file, filter, excludeNuget);
     }
 
     /// <summary>
     /// Generate the dependency graph of a Visual Studio Solution.
     /// </summary>
-    public static string Solution(FileInfo file, DiagramType diagramType = DiagramType.Graph, string? filter = null)
+    public static string Solution(FileInfo file, DiagramType diagramType = DiagramType.Graph, string? filter = null, bool excludeNuget = false)
     {
         var graph = MermaidDiagram.GetDiagramType(diagramType);
         
-        return graph.Solution(file, filter);
+        return graph.Solution(file, filter, excludeNuget);
     }
 }

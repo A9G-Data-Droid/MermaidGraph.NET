@@ -1,4 +1,7 @@
-﻿using MermaidGraph.Diagrams.Base;
+﻿using System;
+using System.IO;
+using System.Linq;
+using MermaidGraph.Diagrams.Base;
 using Microsoft.ClearScript.V8;
 using NUnit.Framework;
 using Assert = NUnit.Framework.Assert;
@@ -125,6 +128,63 @@ public class CommandsTests
         Assert.That(graph, Does.Not.Contain(filter),
             $"Graph should not contain filtered content: {filter}");
     }
+
+    [Test]
+    [TestCase(DiagramType.Graph)]
+    [TestCase(DiagramType.Class)]
+    public void Project_ShouldExcludeNuget_WhenExcludeNugetIsTrue(DiagramType type)
+    {
+        var filePath = FindFileDownTree("*.csproj");
+        Assert.That(filePath, Is.Not.Null);
+        var info = new FileInfo(filePath!);
+        Assert.That(info.Exists);
+
+        var graph = Commands.Project(info, type, excludeNuget: true);
+        Assert.That(graph, Does.Not.Contain("NuGet"), "Graph should not contain NuGet references when noNuget is true.");
+    }
+
+    [Test]
+    [TestCase(DiagramType.Graph)]
+    [TestCase(DiagramType.Class)]
+    public void Solution_ShouldExcludeNuget_WhenExcludeNugetIsTrue(DiagramType type)
+    {
+        var solutionPath = FindFileDownTree("*.sln");
+        Assert.That(solutionPath, Is.Not.Null);
+        var info = new FileInfo(solutionPath!);
+        Assert.That(info.Exists);
+
+        var graph = Commands.Solution(info, type, excludeNuget: true);
+        Assert.That(graph, Does.Not.Contain("NuGet"), "Graph should not contain NuGet references when noNuget is true.");
+    }
+
+    [Test]
+    [TestCase(DiagramType.Graph)]
+    [TestCase(DiagramType.Class)]
+    public void Project_ShouldIncludeNuget_WhenExcludeNugetIsFalse(DiagramType type)
+    {
+        var filePath = FindFileDownTree("*.csproj");
+        Assert.That(filePath, Is.Not.Null);
+        var info = new FileInfo(filePath!);
+        Assert.That(info.Exists);
+
+        var graph = Commands.Project(info, type, excludeNuget: false);
+        Assert.That(graph, Does.Contain("NuGet"), "Graph should contain NuGet references when noNuget is false.");
+    }
+
+    [Test]
+    [TestCase(DiagramType.Graph)]
+    [TestCase(DiagramType.Class)]
+    public void Solution_ShouldIncludeNuget_WhenExcludeNugetIsFalse(DiagramType type)
+    {
+        var solutionPath = FindFileDownTree("*.sln");
+        Assert.That(solutionPath, Is.Not.Null);
+        var info = new FileInfo(solutionPath!);
+        Assert.That(info.Exists);
+
+        var graph = Commands.Solution(info, type, excludeNuget: false);
+        Assert.That(graph, Does.Contain("NuGet"), "Graph should contain NuGet references when noNuget is false.");
+    }
+
 
     private static string ExtractMermaid(string? markup)
     {

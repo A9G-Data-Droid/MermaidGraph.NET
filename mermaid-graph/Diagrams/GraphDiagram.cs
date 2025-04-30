@@ -17,7 +17,7 @@ public sealed class GraphDiagram : MermaidDiagram
     }
 
     /// <inheritdoc />
-    public override string Solution(FileInfo file, string? filter = null)
+    public override string Solution(FileInfo file, string? filter = null, bool excludeNuget = false)
     {
         Header(file.Name);
         var solutionFile = SolutionFile.Parse(file.FullName);
@@ -41,7 +41,7 @@ public sealed class GraphDiagram : MermaidDiagram
             if (projectFile.Exists)
             {
                 var referenceProject = projectCollection.LoadProject(projectFile.FullName);
-                GraphProject(referenceProject, filter);
+                GraphProject(referenceProject, filter, excludeNuget);
             }
         }
 
@@ -52,7 +52,7 @@ public sealed class GraphDiagram : MermaidDiagram
         return Graph.ToString();
     }
 
-    internal override void GraphProject(Project project, string? filter = null)
+    internal override void GraphProject(Project project, string? filter = null, bool excludeNuget = false)
     {
         var projectName = Path.GetFileNameWithoutExtension(project.FullPath);
 
@@ -67,6 +67,7 @@ public sealed class GraphDiagram : MermaidDiagram
             Graph.AppendLine($"    {projectName} --> {refName}");
         }
 
+        if (excludeNuget) return;
         foreach (var item in project.GetItems("PackageReference"))
         {
             var packageName = item.EvaluatedInclude;

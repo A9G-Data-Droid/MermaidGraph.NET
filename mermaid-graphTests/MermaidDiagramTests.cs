@@ -1,3 +1,4 @@
+using System;
 using MermaidGraph.Diagrams;
 using MermaidGraph.Diagrams.Base;
 using NUnit.Framework;
