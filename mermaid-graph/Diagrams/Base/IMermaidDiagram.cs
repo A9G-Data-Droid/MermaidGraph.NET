@@ -1,4 +1,4 @@
-﻿namespace MermaidGraph.Diagrams;
+﻿namespace MermaidGraph.Diagrams.Base;
 
 /// <summary>
 /// This file defines the IMermaidDiagram interface and the MermaidDiagram abstract class.

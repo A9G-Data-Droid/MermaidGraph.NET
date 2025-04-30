@@ -1,4 +1,4 @@
-﻿using MermaidGraph.Diagrams;
+﻿using MermaidGraph.Diagrams.Base;
 
 namespace MermaidGraph;
 

@@ -1,32 +1,19 @@
-﻿using Microsoft.Build.Construction;
+﻿using MermaidGraph.Diagrams.Base;
+using Microsoft.Build.Construction;
 using Microsoft.Build.Evaluation;
 
 namespace MermaidGraph.Diagrams;
 
-internal class GraphDiagram : MermaidDiagram
+/// <summary>
+/// Generates a Mermaid dependency graph for Visual Studio projects and solutions.
+/// </summary>
+public sealed class GraphDiagram : MermaidDiagram
 {
     /// <inheritdoc />
     public override void Header(string title)
     {
         base.Header(title);
         Graph.AppendLine("graph TD");
-    }
-
-    /// <summary>
-    /// Generate the dependency graph of a Visual Studio Project.
-    /// </summary>
-    /// <param name="file">`.csproj` file.</param>
-    public override string Project(FileInfo file)
-    {
-        Header(file.Name);
-        using var projectCollection = new ProjectCollection();
-        var project = projectCollection.LoadProject(file.FullName);
-        GraphProject(project);
-        Graph.AppendLine(Fence);
-
-        projectCollection.UnloadAllProjects();
-
-        return Graph.ToString();
     }
 
     /// <summary>
@@ -64,7 +51,7 @@ internal class GraphDiagram : MermaidDiagram
         return Graph.ToString();
     }
 
-    private void GraphProject(Project project)
+    internal override void GraphProject(Project project)
     {
         var projectName = Path.GetFileNameWithoutExtension(project.FullPath);
 

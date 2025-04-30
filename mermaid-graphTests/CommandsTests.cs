@@ -1,4 +1,4 @@
-﻿using MermaidGraph.Diagrams;
+﻿using MermaidGraph.Diagrams.Base;
 using Microsoft.ClearScript.V8;
 using NUnit.Framework;
 using Assert = NUnit.Framework.Assert;

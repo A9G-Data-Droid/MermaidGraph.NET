@@ -1,4 +1,4 @@
-﻿using MermaidGraph.Diagrams;
+﻿using MermaidGraph.Diagrams.Base;
 
 namespace MermaidGraph;
 
@@ -14,7 +14,7 @@ public class Commands
     /// <param name="diagramType"></param>
     public static string Project(FileInfo file, DiagramType diagramType = DiagramType.Graph)
     {
-        var graph = GetGraphType(diagramType);
+        var graph = MermaidDiagram.GetDiagramType(diagramType);
         
         return graph.Project(file);
     }
@@ -26,15 +26,8 @@ public class Commands
     /// <param name="diagramType"></param>
     public static string Solution(FileInfo file, DiagramType diagramType = DiagramType.Graph)
     {
-        var graph = GetGraphType(diagramType);
+        var graph = MermaidDiagram.GetDiagramType(diagramType);
         
         return graph.Solution(file);
     }
-
-    private static IMermaidDiagram GetGraphType(DiagramType diagramType) => diagramType switch
-    {
-        DiagramType.Class => new ClassDiagram(),
-        DiagramType.Graph => new GraphDiagram(),
-        _ => throw new NotImplementedException($"Option not supported: {diagramType}"),
-    };
 }
