@@ -10,6 +10,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		MermaidGraph.NET.md = MermaidGraph.NET.md
 		.github\workflows\publish.yml = .github\workflows\publish.yml
 		README.md = README.md
+		version.json = version.json
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MermaidGraphTests", "mermaid-graphTests\MermaidGraphTests.csproj", "{FADD9D23-431E-4C1B-B2D4-D4FDF0674FCA}"

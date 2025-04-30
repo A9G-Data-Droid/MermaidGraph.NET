@@ -22,14 +22,15 @@
     <RepositoryUrl>https://github.com/A9G-Data-Droid/MermaidGraph.NET.git</RepositoryUrl>
     <PackageTags>mermaid.js</PackageTags>
     <NeutralLanguage>en</NeutralLanguage>
-    <FileVersion>$(AssemblyVersion)</FileVersion>
+    <FileVersion>$(Version)</FileVersion>
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
     <PackageIcon>mermaid-graph.png</PackageIcon>
     <ApplicationIcon>mermaid-graph.ico</ApplicationIcon>
-    <Version>1.0.0</Version>
+    <Version>1.1.0</Version>
     <PackageLicenseFile>LICENSE</PackageLicenseFile>
     <EnablePackageValidation>true</EnablePackageValidation>
     <PackageValidationBaselineVersion>1.0.0</PackageValidationBaselineVersion>
+    <AssemblyVersion>$(Version)</AssemblyVersion>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">

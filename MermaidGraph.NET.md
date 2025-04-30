@@ -16,17 +16,17 @@ classDiagram
     }
     class Microsoft.Build{
         type NuGet
-        version 17.12.6
+        version 17.13.9
     }
     mermaid-graph ..> Microsoft.Build
     class Microsoft.Build.Locator{
         type NuGet
-        version 1.7.8
+        version 1.9.1
     }
     mermaid-graph ..> Microsoft.Build.Locator
     class Microsoft.Build.Utilities.Core{
         type NuGet
-        version 17.12.6
+        version 17.13.9
     }
     mermaid-graph ..> Microsoft.Build.Utilities.Core
     class System.CommandLine.DragonFruit{
@@ -50,6 +50,16 @@ classDiagram
         version 6.0.4
     }
     MermaidGraphTests ..> coverlet.msbuild
+    class Microsoft.ClearScript.V8{
+        type NuGet
+        version 7.5.0
+    }
+    MermaidGraphTests ..> Microsoft.ClearScript.V8
+    class Microsoft.ClearScript.V8.Native.win-x64{
+        type NuGet
+        version 7.5.0
+    }
+    MermaidGraphTests ..> Microsoft.ClearScript.V8.Native.win-x64
     class Microsoft.NET.Test.Sdk{
         type NuGet
         version 17.13.0
@@ -57,12 +67,12 @@ classDiagram
     MermaidGraphTests ..> Microsoft.NET.Test.Sdk
     class MSTest.TestAdapter{
         type NuGet
-        version 3.7.3
+        version 3.8.3
     }
     MermaidGraphTests ..> MSTest.TestAdapter
     class MSTest.TestFramework{
         type NuGet
-        version 3.7.3
+        version 3.8.3
     }
     MermaidGraphTests ..> MSTest.TestFramework
     class NUnit{
@@ -72,12 +82,13 @@ classDiagram
     MermaidGraphTests ..> NUnit
     class NUnit.Analyzers{
         type NuGet
-        version 4.6.0
+        version 4.7.0
     }
     MermaidGraphTests ..> NUnit.Analyzers
     class NUnit3TestAdapter{
         type NuGet
-        version 4.3.2
+        version 5.0.0
     }
     MermaidGraphTests ..> NUnit3TestAdapter
 ```
+
