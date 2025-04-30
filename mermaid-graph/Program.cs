@@ -1,4 +1,4 @@
-﻿using MermaidGraph.Diagrams;
+﻿using MermaidGraph.Diagrams.Base;
 
 namespace MermaidGraph;
 
@@ -12,8 +12,10 @@ public sealed class Program
     /// </summary>
     /// <param name="path">Full path to the solution (*.sln) or project (*.csproj) file that will be mapped.</param>
     /// <param name="type">The type of diagram to generate (e.g., Graph or Class).</param>
+    /// <param name="filter">Exclude projects whose name matches the filter. (e.g., Test).</param>
+    /// <param name="noNuget">Do not include NuGet packages in the graph.</param>
     /// <returns>HResult</returns>
-    public static int Main(string? path, DiagramType type = DiagramType.Graph)
+    public static int Main(string? path, DiagramType type = DiagramType.Graph, string? filter = null, bool noNuget = false)
     {
         if (path is null)
         {
@@ -34,13 +36,13 @@ public sealed class Program
         {
             if (path.EndsWith(".csproj"))
             {
-                Console.WriteLine(Commands.Project(file, type));
+                Console.WriteLine(Commands.Project(file, type, filter, noNuget));
                 return 0;
             }
 
             if (path.EndsWith(".sln"))
             {
-                Console.WriteLine(Commands.Solution(file, type));
+                Console.WriteLine(Commands.Solution(file, type, filter, noNuget));
                 return 0;
             }
         }

@@ -4,7 +4,7 @@
 
 Create a mermaid graph of the dependency diagram for a project, or whole solution.
 
-## Dotnet tool [![NuGet version (mermaid-graph)](https://img.shields.io/nuget/v/mermaid-graph.svg?style=flat-square)](https://www.nuget.org/packages/mermaid-graph/)
+## Dotnet tool [![NuGet version (mermaid-graph)](https://img.shields.io/nuget/v/mermaid-graph.svg?style=flat-round)](https://www.nuget.org/packages/mermaid-graph/)
 
 You can install as a dotnet tool so you can easily map all of your software projects:
 
@@ -21,6 +21,8 @@ Usage:
 Options:
   --path <path>         Full path to the solution (*.sln) or project (*.csproj) file that will be mapped.
   --type <Class|Graph>  The type of diagram to generate (e.g., Graph or Class). [default: Graph]
+  --filter <filter>     Exclude projects whose name matches the filter. (e.g., Test). []
+  --no-nuget            Do not include NuGet packages in the graph. [default: False]
   --version             Show version information
   -?, -h, --help        Show help and usage information
 ```
@@ -53,17 +55,17 @@ classDiagram
     }
     class Microsoft.Build{
         type NuGet
-        version 17.12.6
+        version 17.13.9
     }
     mermaid-graph ..> Microsoft.Build
     class Microsoft.Build.Locator{
         type NuGet
-        version 1.7.8
+        version 1.9.1
     }
     mermaid-graph ..> Microsoft.Build.Locator
     class Microsoft.Build.Utilities.Core{
         type NuGet
-        version 17.12.6
+        version 17.13.9
     }
     mermaid-graph ..> Microsoft.Build.Utilities.Core
     class System.CommandLine.DragonFruit{
@@ -89,12 +91,12 @@ classDiagram
     MermaidGraphTests ..> coverlet.msbuild
     class Microsoft.ClearScript.V8{
         type NuGet
-        version 7.4.5
+        version 7.5.0
     }
     MermaidGraphTests ..> Microsoft.ClearScript.V8
     class Microsoft.ClearScript.V8.Native.win-x64{
         type NuGet
-        version 7.4.5
+        version 7.5.0
     }
     MermaidGraphTests ..> Microsoft.ClearScript.V8.Native.win-x64
     class Microsoft.NET.Test.Sdk{
@@ -104,12 +106,12 @@ classDiagram
     MermaidGraphTests ..> Microsoft.NET.Test.Sdk
     class MSTest.TestAdapter{
         type NuGet
-        version 3.7.3
+        version 3.8.3
     }
     MermaidGraphTests ..> MSTest.TestAdapter
     class MSTest.TestFramework{
         type NuGet
-        version 3.7.3
+        version 3.8.3
     }
     MermaidGraphTests ..> MSTest.TestFramework
     class NUnit{
@@ -119,12 +121,12 @@ classDiagram
     MermaidGraphTests ..> NUnit
     class NUnit.Analyzers{
         type NuGet
-        version 4.6.0
+        version 4.7.0
     }
     MermaidGraphTests ..> NUnit.Analyzers
     class NUnit3TestAdapter{
         type NuGet
-        version 4.3.2
+        version 5.0.0
     }
     MermaidGraphTests ..> NUnit3TestAdapter
 ```

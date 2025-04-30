@@ -1,4 +1,4 @@
-﻿namespace MermaidGraph.Diagrams;
+﻿namespace MermaidGraph.Diagrams.Base;
 
 /// <summary>
 /// Specifies the type of mermaid diagram to generate.

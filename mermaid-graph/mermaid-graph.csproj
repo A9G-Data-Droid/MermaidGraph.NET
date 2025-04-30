@@ -22,16 +22,15 @@
     <RepositoryUrl>https://github.com/A9G-Data-Droid/MermaidGraph.NET.git</RepositoryUrl>
     <PackageTags>mermaid.js</PackageTags>
     <NeutralLanguage>en</NeutralLanguage>
-    <FileVersion>$(AssemblyVersion)</FileVersion>
+    <FileVersion>$(Version)</FileVersion>
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
     <PackageIcon>mermaid-graph.png</PackageIcon>
     <ApplicationIcon>mermaid-graph.ico</ApplicationIcon>
-    <Version>1.0.0</Version>
+    <Version>1.1.0</Version>
     <PackageLicenseFile>LICENSE</PackageLicenseFile>
     <EnablePackageValidation>true</EnablePackageValidation>
-
-    <!-- TODO: Enable after first release. Detect breaking changes from a previous stable version. -->
-    <!-- <PackageValidationBaselineVersion>1.0.0</PackageValidationBaselineVersion> -->
+    <PackageValidationBaselineVersion>1.0.0</PackageValidationBaselineVersion>
+    <AssemblyVersion>$(Version)</AssemblyVersion>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
@@ -64,9 +63,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.Build" Version="17.12.6" ExcludeAssets="runtime" />
-    <PackageReference Include="Microsoft.Build.Locator" Version="1.7.8" />
-    <PackageReference Include="Microsoft.Build.Utilities.Core" Version="17.12.6" ExcludeAssets="runtime" />
+    <PackageReference Include="Microsoft.Build" Version="17.13.9" ExcludeAssets="runtime" />
+    <PackageReference Include="Microsoft.Build.Locator" Version="1.9.1" />
     <PackageReference Include="System.CommandLine.DragonFruit" Version="0.4.0-alpha.22272.1" />
   </ItemGroup>
 

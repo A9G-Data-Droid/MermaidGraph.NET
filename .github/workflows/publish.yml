@@ -1,6 +1,10 @@
 # yaml-language-server: $schema=https://json.schemastore.org/github-workflow.json
 
 name: publish
+permissions:
+  contents: read
+  pull-requests: write
+
 on:
   workflow_dispatch: # Allow running the workflow manually from the GitHub UI
   push:

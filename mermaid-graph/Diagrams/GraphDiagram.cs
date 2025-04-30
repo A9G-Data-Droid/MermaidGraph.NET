@@ -1,9 +1,13 @@
-﻿using Microsoft.Build.Construction;
+﻿using MermaidGraph.Diagrams.Base;
+using Microsoft.Build.Construction;
 using Microsoft.Build.Evaluation;
 
 namespace MermaidGraph.Diagrams;
 
-internal class GraphDiagram : MermaidDiagram
+/// <summary>
+/// Generates a Mermaid dependency graph for Visual Studio projects and solutions.
+/// </summary>
+public sealed class GraphDiagram : MermaidDiagram
 {
     /// <inheritdoc />
     public override void Header(string title)
@@ -12,28 +16,8 @@ internal class GraphDiagram : MermaidDiagram
         Graph.AppendLine("graph TD");
     }
 
-    /// <summary>
-    /// Generate the dependency graph of a Visual Studio Project.
-    /// </summary>
-    /// <param name="file">`.csproj` file.</param>
-    public override string Project(FileInfo file)
-    {
-        Header(file.Name);
-        using var projectCollection = new ProjectCollection();
-        var project = projectCollection.LoadProject(file.FullName);
-        GraphProject(project);
-        Graph.AppendLine(Fence);
-
-        projectCollection.UnloadAllProjects();
-
-        return Graph.ToString();
-    }
-
-    /// <summary>
-    /// Generate the dependency graph of a Visual Studio Solution.
-    /// </summary>
-    /// <param name="file">`.sln` file.</param>
-    public override string Solution(FileInfo file)
+    /// <inheritdoc />
+    public override string Solution(FileInfo file, string? filter = null, bool excludeNuget = false)
     {
         Header(file.Name);
         var solutionFile = SolutionFile.Parse(file.FullName);
@@ -48,12 +32,16 @@ internal class GraphDiagram : MermaidDiagram
 
             var projectPath = project.AbsolutePath;
             var projectName = Path.GetFileNameWithoutExtension(projectPath);
+            if (!string.IsNullOrEmpty(filter) &&
+                projectName.Contains(filter, StringComparison.Ordinal)) 
+                continue;
+
             Graph.AppendLine($"    {solutionId} --> {projectName}");
             var projectFile = new FileInfo(projectPath);
             if (projectFile.Exists)
             {
                 var referenceProject = projectCollection.LoadProject(projectFile.FullName);
-                GraphProject(referenceProject);
+                GraphProject(referenceProject, filter, excludeNuget);
             }
         }
 
@@ -64,7 +52,7 @@ internal class GraphDiagram : MermaidDiagram
         return Graph.ToString();
     }
 
-    private void GraphProject(Project project)
+    internal override void GraphProject(Project project, string? filter = null, bool excludeNuget = false)
     {
         var projectName = Path.GetFileNameWithoutExtension(project.FullPath);
 
@@ -72,9 +60,14 @@ internal class GraphDiagram : MermaidDiagram
         {
             var refPath = item.EvaluatedInclude;
             var refName = Path.GetFileNameWithoutExtension(refPath);
+            if (!string.IsNullOrEmpty(filter) &&
+                projectName.Contains(filter, StringComparison.Ordinal)) 
+                continue;
+
             Graph.AppendLine($"    {projectName} --> {refName}");
         }
 
+        if (excludeNuget) return;
         foreach (var item in project.GetItems("PackageReference"))
         {
             var packageName = item.EvaluatedInclude;
