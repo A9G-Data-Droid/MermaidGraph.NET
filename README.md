@@ -21,7 +21,8 @@ Usage:
 Options:
   --path <path>         Full path to the solution (*.sln) or project (*.csproj) file that will be mapped.
   --type <Class|Graph>  The type of diagram to generate (e.g., Graph or Class). [default: Graph]
-  --filter <filter>     Exclude projects whose name matches the filter. (e.g., Test) []
+  --filter <filter>     Exclude projects whose name matches the filter. (e.g., Test). []
+  --no-nuget            Do not include NuGet packages in the graph. [default: False]
   --version             Show version information
   -?, -h, --help        Show help and usage information
 ```
