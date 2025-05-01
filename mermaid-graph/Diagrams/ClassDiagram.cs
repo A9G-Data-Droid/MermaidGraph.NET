@@ -61,8 +61,9 @@ public sealed class ClassDiagram : MermaidDiagram
     {
         var projectName = Path.GetFileNameWithoutExtension(project.FullPath);
         var type = project.GetPropertyValue("OutputType");
-        var targetFramework = project.GetPropertyValue("TargetFramework") ?? 
-                              project.GetPropertyValue("TargetFrameworks");
+        var targetFramework = project.GetPropertyValue("TargetFramework");
+        if (string.IsNullOrEmpty(targetFramework)) 
+            targetFramework = project.GetPropertyValue("TargetFrameworks");
 
         Graph.AppendLine($$"""
                               class {{projectName}}{
