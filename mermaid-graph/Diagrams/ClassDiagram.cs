@@ -10,7 +10,7 @@ namespace MermaidGraph.Diagrams;
 public sealed class ClassDiagram : MermaidDiagram
 {
     /// <inheritdoc />
-    public override void Header(string title)
+    internal override void Header(string title)
     {
         base.Header(title);
         Graph.AppendLine("classDiagram");

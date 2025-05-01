@@ -49,7 +49,7 @@ public abstract class MermaidDiagram : IMermaidDiagram
     /// <summary>
     /// Initialize the graph output.
     /// </summary>
-    public virtual void Header(string title)
+    internal virtual void Header(string title)
     {
         Graph.Clear();
         Graph.AppendLine($"""
@@ -67,7 +67,7 @@ public abstract class MermaidDiagram : IMermaidDiagram
     /// Get the mermaid diagram Markdown text.
     /// </summary>
     /// <returns>The contents of the graph buffer.</returns>
-    public override string ToString() => Graph.ToString();
+    public sealed override string ToString() => Graph.ToString();
 
     /// <inheritdoc />
     public virtual string Project(FileInfo file, string? filter = null, bool excludeNuget = false)
