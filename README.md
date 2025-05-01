@@ -51,11 +51,16 @@ classDiagram
     MermaidGraph.NET --> mermaid-graph
     class mermaid-graph{
         type Exe
-        target net9.0
+        target net8.0;net9.0
     }
+    class Nerdbank.GitVersioning{
+        type NuGet
+        version 3.7.115
+    }
+    mermaid-graph ..> Nerdbank.GitVersioning
     class Microsoft.Build{
         type NuGet
-        version 17.13.9
+        version 17.11.4
     }
     mermaid-graph ..> Microsoft.Build
     class Microsoft.Build.Locator{
@@ -63,11 +68,6 @@ classDiagram
         version 1.9.1
     }
     mermaid-graph ..> Microsoft.Build.Locator
-    class Microsoft.Build.Utilities.Core{
-        type NuGet
-        version 17.13.9
-    }
-    mermaid-graph ..> Microsoft.Build.Utilities.Core
     class System.CommandLine.DragonFruit{
         type NuGet
         version 0.4.0-alpha.22272.1
@@ -79,6 +79,11 @@ classDiagram
         target net9.0
     }
     MermaidGraphTests ..> mermaid-graph
+    class Nerdbank.GitVersioning{
+        type NuGet
+        version 3.7.115
+    }
+    MermaidGraphTests ..> Nerdbank.GitVersioning
     class coverlet.collector{
         type NuGet
         version 6.0.4

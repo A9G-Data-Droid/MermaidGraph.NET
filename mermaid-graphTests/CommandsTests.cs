@@ -56,6 +56,7 @@ public class CommandsTests
 
         Console.WriteLine(graph);
         Assert.That(graph, Is.Not.Null.Or.Empty, "Graph should not be null or empty.");
+        Assert.That(graph, Does.Contain($"title: {info.Name}"));
         Assert.That(graph, Does.Contain("mermaid-graph"));
         Assert.That(graph, Does.Contain("MermaidGraphTests"));
         var graphType = DetectType(ExtractMermaid(graph));
@@ -74,6 +75,7 @@ public class CommandsTests
         Assert.That(info.Exists);
         var graph = Commands.Project(info, type);
         Assert.That(graph, Is.Not.Null.Or.Empty, "Graph should not be null or empty.");
+        Assert.That(graph, Does.Contain($"title: {info.Name}"));
         Assert.That(graph, Does.Contain("mermaid-graph"));
         Assert.That(graph, Does.Contain("MermaidGraphTests"));
         Console.WriteLine(graph);
